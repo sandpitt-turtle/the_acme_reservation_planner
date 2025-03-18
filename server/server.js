@@ -35,19 +35,18 @@ app.get('/api/reservations',  async(req, res, next)=> {
 });
 
 
-app.post('/api/customers/:id/reservations',  async(req, res, next)=> {
+app.post('/api/customers/:id/reservations', async (req, res, next) => {
     try {
-        res.status(201).send(await createReservation
-            ({ 
-                restaurant_id: req.body.restaurant_id, 
-                date: req.body.date, 
-                party_count: req.body.party_count
-            }));
-    }
-    catch(ex){
+        res.status(201).send(await createReservation({
+            restaurant_id: req.body.restaurant_id,
+            date: req.body.date,
+            party_count: req.body.party_count
+        }));
+    } catch (ex) {
         next(ex);
     }
 });
+
 
 
 app.delete('/api/customers/:customer_id/reservations/:id',  async(req, res, next)=> {
@@ -107,14 +106,13 @@ const init = async () => {
     ]);
 
     console.log(await fetchReservations());
-
-
-    await destroyReservation({ id: reservations[0].id, customer_id: reservations[0].customer_id});
+    await destroyReservation({ id: reservation.id, customer_id: reservation.customer_id});
     console.log(await fetchReservations()); 
    
 
     console.log('Database seeded successfully!');
 };
+
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
