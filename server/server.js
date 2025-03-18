@@ -1,5 +1,21 @@
 const { client, createTables, createCustomer, createRestaurant, fetchCustomers, fetchRestaurants, createReservation, destroyReservation, fetchReservations } = require('./db');
 
+const express = require('express');
+const app = express();
+app.use(express.json());
+
+
+
+app.get('/api/reservations',  async(req, res, next)=> {
+    try {
+        res.send(await fetchReservations());
+    }
+    catch(ex){
+        next(ex);
+    }
+});
+
+
 const init = async () => {
     console.log('Connecting to database');
     await client.connect();
