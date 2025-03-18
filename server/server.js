@@ -35,6 +35,21 @@ app.get('/api/reservations',  async(req, res, next)=> {
 });
 
 
+app.post('/api/customers/:id/reservations',  async(req, res, next)=> {
+    try {
+        res.status(201).send(await createReservation
+            ({ 
+                restaurant_id: req.body.restaurant_id, 
+                date: req.body.date, 
+                party_count: req.body.party_count
+            }));
+    }
+    catch(ex){
+        next(ex);
+    }
+});
+
+
 
 
 
