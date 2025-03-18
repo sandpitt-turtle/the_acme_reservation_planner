@@ -6,14 +6,25 @@ app.use(express.json());
 
 
 
-app.get('/api/reservations',  async(req, res, next)=> {
+app.get('/api/customers',  async(req, res, next)=> {
     try {
-        res.send(await fetchReservations());
+        res.send(await fetchCustomers());
     }
     catch(ex){
         next(ex);
     }
 });
+
+app.get('/api/restaurants',  async(req, res, next)=> {
+    try {
+        res.send(await fetchRestaurants());
+    }
+    catch(ex){
+        next(ex);
+    }
+});
+
+
 
 
 const init = async () => {
