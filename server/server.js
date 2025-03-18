@@ -50,8 +50,20 @@ app.post('/api/customers/:id/reservations',  async(req, res, next)=> {
 });
 
 
+app.delete('/api/customers/:customer_id/reservations/:id',  async(req, res, next)=> {
+    try {
+        await destroyVacation({customer_id: req.params.customer_id, id: req.params.id});
+        res.sendStatus(204);
+    }
+    catch(ex){
+        next(ex);
+    }
+});
 
 
+app.use((err, req, res, next)=> {
+    res.status(err.status || 500).send({ error: err.message || err});
+});
 
 const init = async () => {
     console.log('Connecting to database');
