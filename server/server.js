@@ -52,7 +52,7 @@ app.post('/api/customers/:id/reservations',  async(req, res, next)=> {
 
 app.delete('/api/customers/:customer_id/reservations/:id',  async(req, res, next)=> {
     try {
-        await destroyVacation({customer_id: req.params.customer_id, id: req.params.id});
+        await destroyReservation({customer_id: req.params.customer_id, id: req.params.id});
         res.sendStatus(204);
     }
     catch(ex){
@@ -107,11 +107,18 @@ const init = async () => {
     ]);
 
     console.log(await fetchReservations());
-    await destroyReservation({ id: reservation.id, customer_id: reservation.customer_id});
+
+
+    await destroyReservation({ id: reservations[0].id, customer_id: reservations[0].customer_id});
     console.log(await fetchReservations()); 
    
 
     console.log('Database seeded successfully!');
 };
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+    console.log(`Running on http://localhost:${PORT}`);
+});
 
 init();
