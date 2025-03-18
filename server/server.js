@@ -25,6 +25,17 @@ app.get('/api/restaurants',  async(req, res, next)=> {
 });
 
 
+app.get('/api/reservations',  async(req, res, next)=> {
+    try {
+        res.send(await fetchReservations());
+    }
+    catch(ex){
+        next(ex);
+    }
+});
+
+
+
 
 
 const init = async () => {
