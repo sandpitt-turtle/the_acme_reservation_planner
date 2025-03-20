@@ -89,7 +89,6 @@ const createCustomer = async({name})=> {
     return result.rows[0];
 }
 
-
 const destroyReservation = async({ id, customer_id}) => {
     id = id.trim();
     const SQL = `
