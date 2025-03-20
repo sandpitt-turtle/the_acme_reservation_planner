@@ -90,7 +90,10 @@ app.post('/api/customers/:id/reservations', async (req, res, next) => {
 app.delete('/api/customers/:customer_id/reservations/:id',  
     async(req, res, next)=> {
     try {
-        await destroyReservation({customer_id: req.params.customer_id, id: req.params.id});
+        await destroyReservation({
+            customer_id: req.params.customer_id, 
+            id: req.params.id
+        });
         res.sendStatus(204);
     }
     catch(ex){

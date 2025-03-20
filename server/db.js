@@ -91,10 +91,10 @@ const createCustomer = async({name})=> {
 
 
 const destroyReservation = async({ id, customer_id}) => {
-    console.log(id, customer_id)
+    id = id.trim();
     const SQL = `
         DELETE FROM reservations
-        WHERE id = $1 AND customer_id=$2
+        WHERE id = $1 AND customer_id = $2
     `;
     await client.query(SQL, [id, customer_id]);
 };
