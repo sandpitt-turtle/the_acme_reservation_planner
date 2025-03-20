@@ -99,7 +99,6 @@ const destroyReservation = async({ id, customer_id}) => {
 };
 
 
-
 module.exports = {
     client,
     createTables,
