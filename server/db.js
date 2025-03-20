@@ -45,7 +45,7 @@ const createCustomer = async({name})=> {
     const SQL = `
       INSERT INTO restaurants(id, name) 
       VALUES($1, $2) 
-      RETURNING *
+      RETURNING *;
     `;
     const response = await client.query(SQL, [uuid.v4(), name]);
     return response.rows[0];
@@ -79,15 +79,16 @@ const createCustomer = async({name})=> {
     return response.rows;
   }
 
-  const createReservation = async({id, date, party_count, restaurant_id, customer_id  })=> {
-    const SQL = `
-        INSERT INTO reservations(id, date, party_count, restaurant_id, customer_id)
-        VALUES ($1, $2, $3, $4, $5)
-        RETURNING *
-    `;
-    const response = await client.query(SQL, [uuid.v4(), date, party_count, restaurant_id, customer_id]);
-    return response.rows[0];
+  async function createReservation({ customer_id, restaurant_id, date, party_count }) {
+    const result = await client.query(
+        `INSERT INTO reservations (customer_id, restaurant_id, date, party_count) 
+         VALUES ($1, $2, $3, $4) 
+         RETURNING *`,
+        [customer_id, restaurant_id, date, party_count]
+    );
+    return result.rows[0];
 }
+
 
 const destroyReservation = async({ id, customer_id}) => {
     console.log(id, customer_id)
@@ -97,6 +98,8 @@ const destroyReservation = async({ id, customer_id}) => {
     `;
     await client.query(SQL, [id, customer_id]);
 };
+
+
 
 module.exports = {
     client,

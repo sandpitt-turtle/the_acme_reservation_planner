@@ -1,4 +1,10 @@
-const { client, createTables, createCustomer, createRestaurant, fetchCustomers, fetchRestaurants, createReservation, destroyReservation, fetchReservations } = require('./db');
+const { 
+    
+    client, createTables, createCustomer, createRestaurant, 
+    fetchCustomers, fetchRestaurants, createReservation, 
+    destroyReservation, fetchReservations       
+    
+    } = require('./db');
 
 const express = require('express');
 const app = express();
@@ -6,7 +12,8 @@ app.use(express.json());
 
 
 
-app.get('/api/customers',  async(req, res, next)=> {
+app.get('/api/customers',  
+    async(req, res, next)=> {
     try {
         res.send(await fetchCustomers());
     }
@@ -15,7 +22,22 @@ app.get('/api/customers',  async(req, res, next)=> {
     }
 });
 
-app.get('/api/restaurants',  async(req, res, next)=> {
+
+app.post('/api/customers', async (req, res, next) => {
+    try {
+        const newCustomer = await createCustomer({
+            customer_id: req.body.customer_id,
+            name: req.body.name,
+        });
+        res.status(201).send(newCustomer);
+    } catch (ex) {
+        next(ex);
+    }
+});
+
+
+app.get('/api/restaurants',  
+    async(req, res, next)=> {
     try {
         res.send(await fetchRestaurants());
     }
@@ -25,7 +47,21 @@ app.get('/api/restaurants',  async(req, res, next)=> {
 });
 
 
-app.get('/api/reservations',  async(req, res, next)=> {
+app.post('/api/restaurants', async (req, res, next) => {
+    try {
+        const newRestaurant = await createRestaurant({
+            name: req.body.name,
+        });
+        res.status(201).send(newRestaurant);
+    } catch (ex) {
+        next(ex);
+    }
+});
+
+
+
+app.get('/api/reservations',  
+    async(req, res, next)=> {
     try {
         res.send(await fetchReservations());
     }
@@ -37,11 +73,13 @@ app.get('/api/reservations',  async(req, res, next)=> {
 
 app.post('/api/customers/:id/reservations', async (req, res, next) => {
     try {
-        res.status(201).send(await createReservation({
+        const newReservation = await createReservation({
+            customer_id: req.params.id, 
             restaurant_id: req.body.restaurant_id,
             date: req.body.date,
             party_count: req.body.party_count
-        }));
+        });
+        res.status(201).send(newReservation);
     } catch (ex) {
         next(ex);
     }
@@ -49,7 +87,8 @@ app.post('/api/customers/:id/reservations', async (req, res, next) => {
 
 
 
-app.delete('/api/customers/:customer_id/reservations/:id',  async(req, res, next)=> {
+app.delete('/api/customers/:customer_id/reservations/:id',  
+    async(req, res, next)=> {
     try {
         await destroyReservation({customer_id: req.params.customer_id, id: req.params.id});
         res.sendStatus(204);
